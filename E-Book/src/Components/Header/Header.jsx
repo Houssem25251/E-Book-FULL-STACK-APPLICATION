@@ -3,7 +3,7 @@ import {useLocation,useNavigate} from 'react-router';
 import {scroller} from 'react-scroll';
 
 
-export function Header({Search,setSearch}){
+export function Header({setShowModal,setType,Search,setSearch}){
     const l=useLocation();
     const n=useNavigate();
     function Click(PagePart){
@@ -40,6 +40,7 @@ export function Header({Search,setSearch}){
                 <div className="Header-Part" onClick={() => Click("Library")}>Library</div>
                 <div className="Header-Part" onClick={() => Click("Favorites")}>Favorites</div>
                 <div className="Header-Part" onClick={() => Click("About")}>About</div>
+                <button className="Header-SignUp" onClick={()=>{setShowModal(true)}}>Sign up</button>
             </div>
         </div>
 )

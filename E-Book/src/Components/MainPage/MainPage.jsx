@@ -4,15 +4,13 @@ import {Categories} from '../Categories/Categories.jsx';
 import {Library} from '../Library/Library.jsx';
 import {Favorites} from '../Favorites/Favorites.jsx';
 import {useLocation} from 'react-router';
-import {useEffect,useState} from 'react';
+import {useEffect} from 'react';
 import {scroller} from 'react-scroll';
 import {About} from '../About/About.jsx';
 
 
 
 export function MainPage({CategoriesArray,setbooksfav,books,booksfav,bookssaved,setbookssaved}){
-    const [window,setWindow]=useState(false);
-    const [type,setType]=useState('login');
     const l=useLocation();
     useEffect(()=>{
         scroller.scrollTo(l.state,{

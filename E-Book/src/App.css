@@ -10,6 +10,113 @@ body {
     overflow-x: hidden;
     max-width: 100%;
 }
+.lib-icon{
+    width:200px;
+    height: 200px;
+}
+
+.Modal{
+    background-color: rgb(0,0,0,0.6);
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease;
+}
+.Welcome-SignUp{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size:40px;
+}
+.register-text{
+    font-size:18px;
+    color:white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-top:-1px;
+}
+.register-text-click{
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition:transform 0.3s ease;
+    display: inline-block;
+    margin-left:4px;
+}
+.register-text-click:hover{
+    transform:scale(1.05);
+    cursor:pointer;
+}
+.Left{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    flex:1;
+    border-radius: 50px 0 0 50px;
+}
+.SignUp-Button{
+    width:150px;
+    height: 45px;
+    border-radius: 50px;
+    border-style:solid;
+    border-color: rgb(255, 255, 255);
+    background-color: rgb(56,56,56);
+    color:white;
+    font-size:18px;
+    transition: all 0.3s ease;
+}
+.SignUp-Button:hover{
+    background-color: white;
+    color:rgb(56,56,56);
+    cursor:pointer;
+}
+.SignUp-Input{
+    width:280px;
+    height: 40px;
+    outline: none;
+    border-style: solid;
+    border-color: white;
+    border-radius: 50px;
+    text-align: center;
+    transition:transform 0.3s ease;
+    font-size:18px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.SignUp-Input:focus{
+    transform:scale(1.05);
+}
+.Right{
+    flex:1;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 30px;
+}
+.Box{
+    background-color: rgb(56,56,56);
+    border-radius: 50px;
+    width: 850px;
+    height: 600px;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    animation: slideUp 0.3s ease;
+    overflow: hidden;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
 @media (max-width:414px){
     .AppDiv{
