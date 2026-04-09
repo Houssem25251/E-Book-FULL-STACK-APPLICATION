@@ -13,7 +13,7 @@ import LIBRARY from '../public/Library.png';
 
 
 
-function MainPageApp({Search,setSearch,CategoriesArray,setbooksfav,books,booksfav,bookssaved,setbookssaved}){
+function MainPageApp({Search,setSearch,CategoriesArray,setbooksfav,books,booksfav,bookssaved,setbookssaved,onLoginSuccess}){
   const [showModal,setShowModal]=useState(false);
   const [type,setType]=useState('login');
   const [username,setUsername]=useState('');
@@ -21,16 +21,19 @@ function MainPageApp({Search,setSearch,CategoriesArray,setbooksfav,books,booksfa
   const [confirmPassword,setConfirmPassword]=useState('');
   const[error,setError]=useState('');
 
-  async function handleRegsiter(){
-    if(password!==confirmPassword){return setError("Passwords don't match!");};
+  async function handleRegister(){
+    if(password !== confirmPassword) return setError("Passwords don't match!");
     try{
-      const {data}=await axios.post('http://localhost:3000/api/users/register',{username,password});
-      setError(data.message);
+        const {data} = await axios.post('http://localhost:3000/api/users/register', {username, password});
+        localStorage.setItem('token', data.token);
+        onLoginSuccess();  
+        setShowModal(false);
+        setError('');
     }
     catch(err){
-      setError(err.response?.data?.message);
+        setError(err.response?.data?.message || 'Registration failed');
     }
-  };
+}
 
   async function handleLogin(){
     try{
@@ -57,7 +60,7 @@ function MainPageApp({Search,setSearch,CategoriesArray,setbooksfav,books,booksfa
                     <input className="SignUp-Input" placeholder="Username" value={username} onChange={(e)=>{setUsername(e.target.value)}}/>
                     <input type ="password" className="SignUp-Input" placeholder="Password" value={password} onChange={(e)=>{setPassowrd(e.target.value)}}/>
                     {type==='register' && <input type ="password" className="SignUp-Input" placeholder="Confirm password" value={confirmPassword} onChange={(e)=>{setConfirmPassword(e.target.value)}}/>} 
-                    {type==='register' && <button onClick={handleRegsiter} className="SignUp-Button">Register</button>}
+                    {type==='register' && <button onClick={handleRegister} className="SignUp-Button">Register</button>}
                     {type==='login' && <button onClick={handleLogin} className="SignUp-Button">Login</button>}
                     {error && <p className="register-text">{error}</p>}
                     {type==='login' && <p onClick={()=>{setType('register');}} className="register-text">Don't have an account? <span className="register-text-click">Click here!</span></p>}
@@ -71,32 +74,74 @@ function MainPageApp({Search,setSearch,CategoriesArray,setbooksfav,books,booksfa
 }
 
 function App(){
-  //books
-  const[books,setBooks]=useState([]);
-    useEffect(()=>{
+  const [books,setBooks]=useState([]);
+  const [booksfav,setbooksfav]=useState([]);
+  const [bookssaved,setbookssaved]=useState([]);
+  const [Search,setSearch]=useState("");
+
+  useEffect(()=>{
     const getBooks=async()=>{
       const response = await axios.get('http://localhost:3000/api/books');
       setBooks(response.data);
     }
     getBooks();  
-},[]);
-  //Favorites and savedbooks
-  const[booksfav,setbooksfav]=useState([]);
-  const[bookssaved,setbookssaved]=useState([]);
-  
-  //Input data (in header)
-  const[Search,setSearch]=useState("");
-  
+  },[]);
+
+  const fetchLibrary = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    const headers = { Authorization: `Bearer ${token}` };
+    try {
+      const [favRes, savedRes] = await Promise.all([
+        axios.get('http://localhost:3000/api/users/favorites', { headers }),
+        axios.get('http://localhost:3000/api/users/saved', { headers })
+      ]);
+      setbooksfav(favRes.data);
+      setbookssaved(savedRes.data);
+    } catch (err) {
+      console.error('Failed to fetch library', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchLibrary();
+  }, []);
+
+  const toggleFav = async (bookId) => {
+    const token = localStorage.getItem('token');
+    if (!token) return alert('Please login first!');
+    const headers = { Authorization: `Bearer ${token}` };
+    await axios.post(`http://localhost:3000/api/users/favorites/${bookId}`, {}, { headers });
+    fetchLibrary();
+  };
+
+  const toggleSaved = async (bookId) => {
+    const token = localStorage.getItem('token');
+    if (!token) return alert('Please login first!');
+    const headers = { Authorization: `Bearer ${token}` };
+    await axios.post(`http://localhost:3000/api/users/saved/${bookId}`, {}, { headers });
+    fetchLibrary();
+  };
+
   return(
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainPageApp Search={Search} setSearch={setSearch} CategoriesArray={CategoriesArray} setbooksfav={setbooksfav} booksfav={booksfav} books={books} bookssaved={bookssaved} setbookssaved={setbookssaved}/>}/>
-        <Route path="/book/:id" element ={<BookPage Search={Search} setSearch={setSearch} setbooksfav={setbooksfav} booksfav={booksfav} books={books} />}/>
-        <Route path="/category/:id" element={<CategoryPage Search={Search} setSearch={setSearch} CategoriesArray={CategoriesArray} setbooksfav={setbooksfav} booksfav={booksfav} books={books} bookssaved={bookssaved} setbookssaved={setbookssaved}/>}/>
-        <Route path="/filteredbooks" element={<FilteredBooks Search={Search} setSearch={setSearch} books={books} booksfav={booksfav} setbooksfav={setbooksfav} bookssaved={bookssaved} setbookssaved={setbookssaved}/>}/>
+        <Route path="/" element={<MainPageApp
+    Search={Search}
+    setSearch={setSearch}
+    CategoriesArray={CategoriesArray}
+    books={books}
+    booksfav={booksfav}
+    bookssaved={bookssaved}
+    toggleFav={toggleFav}     
+    toggleSaved={toggleSaved}  
+    onLoginSuccess={fetchLibrary}
+/>}/>
+        <Route path="/book/:id" element={<BookPage Search={Search} setSearch={setSearch} setbooksfav={toggleFav} booksfav={booksfav} books={books} />}/>
+        <Route path="/category/:id" element={<CategoryPage Search={Search} setSearch={setSearch} CategoriesArray={CategoriesArray} setbooksfav={toggleFav} booksfav={booksfav} books={books} bookssaved={bookssaved} setbookssaved={toggleSaved}/>}/>
+        <Route path="/filteredbooks" element={<FilteredBooks Search={Search} setSearch={setSearch} books={books} booksfav={booksfav} setbooksfav={toggleFav} bookssaved={bookssaved} setbookssaved={toggleSaved}/>}/>
       </Routes>
     </BrowserRouter>
-  
   )
 }
 

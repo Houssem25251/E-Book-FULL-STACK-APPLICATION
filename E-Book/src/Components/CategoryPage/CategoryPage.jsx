@@ -4,10 +4,19 @@ import { useParams } from 'react-router';
 import {BookCard} from '../BookCard/BookCard.jsx';
 
 export function CategoryPage({Search,setSearch,CategoriesArray,books,booksfav,setbooksfav,bookssaved,setbookssaved}){
-    let {id}=useParams();
+     let {id}=useParams();
     const cat=CategoriesArray.find(k=>k.id===Number(id));
-    const CatBooks=books.filter(e=>e.genre===cat.title);
-
+    
+    console.log('Category:', cat);
+    console.log('Category title:', cat?.title);
+    
+    if(books.length > 0) {
+        console.log('First book genre:', books[0].genre);
+        console.log('Type of genre:', typeof books[0].genre);
+    }
+    
+    const CatBooks = books.filter(e => e.genre === cat?.title);
+    console.log('Filtered books count:', CatBooks.length);
     return(
         <div className="MainCategoryPage">
             <Header Search={Search} setSearch={setSearch}/>

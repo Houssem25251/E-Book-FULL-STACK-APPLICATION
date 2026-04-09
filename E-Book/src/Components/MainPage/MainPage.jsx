@@ -8,23 +8,33 @@ import {useEffect} from 'react';
 import {scroller} from 'react-scroll';
 import {About} from '../About/About.jsx';
 
-
-
-export function MainPage({CategoriesArray,setbooksfav,books,booksfav,bookssaved,setbookssaved}){
+export function MainPage({CategoriesArray, books, booksfav, bookssaved, toggleFav, toggleSaved}){
     const l=useLocation();
     useEffect(()=>{
         scroller.scrollTo(l.state,{
-                smooth: true,
-                duration: 400,
-                offset: -50
+            smooth: true,
+            duration: 400,
+            offset: -50
         })
     },[l]);
+    
     return(
         <div className="MainPage">
             <Home />
             <Categories CategoriesArray={CategoriesArray} />
-            <Library setbooksfav={setbooksfav} books={books} booksfav={booksfav} bookssaved={bookssaved} setbookssaved={setbookssaved} />
-            <Favorites setbooksfav={setbooksfav} booksfav={booksfav} bookssaved={bookssaved} setbookssaved={setbookssaved}/>
+            <Library 
+                books={books} 
+                booksfav={booksfav} 
+                bookssaved={bookssaved} 
+                toggleFav={toggleFav}      
+                toggleSaved={toggleSaved}  
+            />
+            <Favorites 
+                booksfav={booksfav} 
+                bookssaved={bookssaved} 
+                toggleFav={toggleFav}      
+                toggleSaved={toggleSaved}  
+            />
             <About />
         </div>
     )

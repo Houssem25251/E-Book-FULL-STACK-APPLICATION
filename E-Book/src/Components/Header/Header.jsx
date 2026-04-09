@@ -40,7 +40,7 @@ export function Header({setShowModal,setType,Search,setSearch}){
                 <div className="Header-Part" onClick={() => Click("Library")}>Library</div>
                 <div className="Header-Part" onClick={() => Click("Favorites")}>Favorites</div>
                 <div className="Header-Part" onClick={() => Click("About")}>About</div>
-                <button className="Header-SignUp" onClick={()=>{setShowModal(true)}}>Sign up</button>
+                <button className="Header-SignUp" onClick={() => {setShowModal(true);setType('register');  }}>Sign up</button>
             </div>
         </div>
 )

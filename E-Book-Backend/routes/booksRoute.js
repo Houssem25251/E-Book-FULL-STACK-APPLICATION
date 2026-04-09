@@ -1,16 +1,34 @@
-import {saved,favorites} from '../schema.js';
-import {db} from '../db.js';
 import express from 'express';
-import { authentificate } from '../middleware/authentificate.js';
+import { db } from '../db.js';
+import { books } from '../schema.js';
 
-export const booksRouter=express.Router();
- 
-booksRouter.post('/saved',async (req,res)=>{
-    const bookId=20;
-    const userId=11;
-    const add=await db.insert(saved).values({user_id:userId,book_id:bookId});
-    if(!add){
-        return res.status(400).json({message:'Something went wrong!'});
+export const booksRouter = express.Router();
+
+
+booksRouter.get('/', async (req, res) => {
+    try {
+        const allBooks = await db.select().from(books);
+        console.log(`Fetched ${allBooks.length} books`);
+        res.json(allBooks);
+    } catch (error) {
+        console.error('Error fetching books:', error);
+        res.status(500).json({ error: 'Failed to fetch books' });
     }
-    return res.json({message:'Book has been successfully added!'});
+});
+
+
+booksRouter.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const book = await db.select().from(books).where({ id: parseInt(id) });
+        
+        if (book.length === 0) {
+            return res.status(404).json({ error: 'Book not found' });
+        }
+        
+        res.json(book[0]);
+    } catch (error) {
+        console.error('Error fetching book:', error);
+        res.status(500).json({ error: 'Failed to fetch book' });
+    }
 });

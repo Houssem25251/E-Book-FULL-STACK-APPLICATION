@@ -1,16 +1,21 @@
 import './Library.css';
 import { BookCard } from '../BookCard/BookCard.jsx';
 
-function SavedBooks({setbooksfav,books,booksfav,bookssaved,setbookssaved}){
+function SavedBooks({ books, booksfav, bookssaved, toggleFav, toggleSaved }) {
     return(
         <div id="Library" className="SavedBooks-Container">
             <p className="SavedBooks-Text">Saved Books</p>
             <div className="Books-Container">
-                {bookssaved.map((c)=>{
+                {bookssaved.map((book) => {
                     return(
-                        <>
-                            <BookCard key={c.id} setbooksfav={setbooksfav} booksfav={booksfav} s={c} bookssaved={bookssaved} setbookssaved={setbookssaved}/>
-                        </>
+                        <BookCard 
+                            key={book.id} 
+                            s={book} 
+                            booksfav={booksfav} 
+                            bookssaved={bookssaved} 
+                            toggleFav={toggleFav} 
+                            toggleSaved={toggleSaved}
+                        />
                     )
                 })}
             </div>    
@@ -18,11 +23,17 @@ function SavedBooks({setbooksfav,books,booksfav,bookssaved,setbookssaved}){
     )
 }
 
-export function Library({setbooksfav,books,booksfav,bookssaved,setbookssaved}){
+export function Library({ books, booksfav, bookssaved, toggleFav, toggleSaved }) {
     return(
         <>
             <p className="Library-Text">My Library</p>
-            <SavedBooks booksfav={booksfav} setbooksfav={setbooksfav} books={books} bookssaved={bookssaved} setbookssaved={setbookssaved} />
+            <SavedBooks 
+            books={books}
+            booksfav={booksfav}
+            bookssaved={bookssaved}
+            toggleFav={toggleFav}
+            toggleSaved={toggleSaved}
+            />
         </>
     )
 }
