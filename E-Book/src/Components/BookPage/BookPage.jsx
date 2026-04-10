@@ -17,7 +17,17 @@ function renderStars(rev) {
     return stars;
 }
 
-export function BookPage({ Search, setSearch, books, booksfav, toggleFav,user, onLogout}) {
+export function BookPage({
+    Search,
+    setSearch,
+    books,
+    booksfav,
+    toggleFav,
+    user,
+    onLogout,
+    setShowModal,
+    setType
+}) {
     const { id } = useParams();
     const s = books.find(e => e.id === parseInt(id));
     if (!s) return null;
@@ -26,7 +36,14 @@ export function BookPage({ Search, setSearch, books, booksfav, toggleFav,user, o
 
     return (
         <div className="MainBookPage">
-            <Header Search={Search} setSearch={setSearch} user={user} onLogout={onLogout} />
+            <Header
+    Search={Search}
+    setSearch={setSearch}
+    user={user}
+    onLogout={onLogout}
+    setShowModal={setShowModal}
+    setType={setType}
+/>
             <div className="BookPage">
                 <p className="book-title">{s.title}</p>
                 <div className="BookPage-Content">
