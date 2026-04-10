@@ -7,7 +7,8 @@ import {usersRouter} from './routes/usersRoute.js';
 const app=express();
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:5173"
+  "http://localhost:5173",
+  "https://your-frontend.onrender.com"
 }));
 
 app.use('/images',express.static('booksdata/images'));
