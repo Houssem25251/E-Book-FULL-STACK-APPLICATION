@@ -4,6 +4,7 @@ import UNFILLEDSTAR from '../../assets/UNFILLEDSTAR.png';
 import HALFFILLEDSTAR from '../../assets/HALFFILLEDSTAR.png';
 import { Header } from '../Header/Header.jsx';
 import { useParams } from 'react-router';
+import { API_URL } from '../../api.js';
 
 function renderStars(rev) {
     const stars = [];
@@ -29,13 +30,13 @@ export function BookPage({ Search, setSearch, books, booksfav, toggleFav,user, o
             <div className="BookPage">
                 <p className="book-title">{s.title}</p>
                 <div className="BookPage-Content">
-                    <img className="BookPage-Image" src={`http://localhost:3000${s.image}`} />
+                    <img className="BookPage-Image" src={`${API_URL}${s.image}`} />
                     <div className="sub-book-content">
                         <p className="book-author">By {s.author}</p>
                         <div className="ReviewsContainer">{renderStars(s.reviews)}</div>
                         <p className="book-description">{s.description}</p>
                         <div className="parent-download">
-                            <a className="download" href={`http://localhost:3000${s.download}`} download>Download PDF</a>
+                            <a className="download" href={`${API_URL}${s.download}`} download>Download PDF</a>
                             <a onClick={() => toggleFav(s.id)} className="download" style={{ cursor: 'pointer' }}>
                                 {isFav ? 'Remove from favorites' : 'Add to favorites'}
                             </a>

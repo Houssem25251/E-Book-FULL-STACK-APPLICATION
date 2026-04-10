@@ -10,6 +10,7 @@ import { FilteredBooks } from './Components/FilteredBooks/FilteredBooks.jsx';
 import { CategoriesArray } from './Data/CategoriesData.jsx';
 import axios from 'axios';
 import LIBRARY from '../public/Library.png';
+import { API_URL } from './api.js';
 
 function MainPageApp({ Search, setSearch, books, booksfav, bookssaved, toggleFav, toggleSaved, user, onLoginSuccess, onLogout }) {
     const [showModal, setShowModal] = useState(false);
@@ -22,7 +23,7 @@ function MainPageApp({ Search, setSearch, books, booksfav, bookssaved, toggleFav
     async function handleRegister() {
         if (password !== confirmPassword) return setError("Passwords don't match!");
         try {
-            const { data } = await axios.post('http://localhost:3000/api/users/register', { username, password });
+            const { data } = await axios.post(`${API_URL}/api/users/register`, { username, password });
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
             await onLoginSuccess();
@@ -38,7 +39,7 @@ function MainPageApp({ Search, setSearch, books, booksfav, bookssaved, toggleFav
 
     async function handleLogin() {
         try {
-            const { data } = await axios.post('http://localhost:3000/api/users/login', { username, password });
+            const { data } = await axios.post(`${API_URL}/api/users/login`, { username, password });
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
             await onLoginSuccess();
@@ -134,7 +135,7 @@ function App() {
     const [user, setUser] = useState(localStorage.getItem('username') || null);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/books').then(r => setBooks(r.data));
+        axios.get(`${API_URL}/api/books`).then(r => setBooks(r.data));
     }, []);
 
     const fetchLibrary = async () => {
@@ -143,8 +144,8 @@ function App() {
         const headers = { Authorization: `Bearer ${token}` };
         try {
             const [favRes, savedRes] = await Promise.all([
-                axios.get('http://localhost:3000/api/users/favorites', { headers }),
-                axios.get('http://localhost:3000/api/users/saved', { headers })
+                axios.get(`${API_URL}/api/users/favorites`, { headers }),
+                axios.get(`${API_URL}/api/users/saved`, { headers })
             ]);
             setBooksfav(favRes.data);
             setBookssaved(savedRes.data);
@@ -178,7 +179,7 @@ function App() {
         if (!token) return alert('Please login first!');
         const headers = { Authorization: `Bearer ${token}` };
         try {
-            await axios.post(`http://localhost:3000/api/users/favorites/${bookId}`, {}, { headers });
+            await axios.post(`${API_URL}/api/users/favorites/${bookId}`, {}, { headers });
             fetchLibrary();
         } catch {
             alert('Failed to update favorites');
@@ -190,7 +191,7 @@ function App() {
         if (!token) return alert('Please login first!');
         const headers = { Authorization: `Bearer ${token}` };
         try {
-            await axios.post(`http://localhost:3000/api/users/saved/${bookId}`, {}, { headers });
+            await axios.post(`${API_URL}/api/users/saved/${bookId}`, {}, { headers });
             fetchLibrary();
         } catch {
             alert('Failed to update saved books');
