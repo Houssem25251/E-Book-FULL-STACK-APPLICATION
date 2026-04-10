@@ -1,34 +1,56 @@
-import {Header} from '../Header/Header.jsx';
+import { Header } from '../Header/Header.jsx';
 import './CategoryPage.css';
 import { useParams } from 'react-router';
-import {BookCard} from '../BookCard/BookCard.jsx';
+import { BookCard } from '../BookCard/BookCard.jsx';
 
-export function CategoryPage({Search,setSearch,CategoriesArray,books,booksfav,toggleFav,bookssaved,toggleSaved,user,onLogout}){
-     let {id}=useParams();
-    const cat=CategoriesArray.find(k=>k.id===Number(id));
-    
-    console.log('Category:', cat);
-    console.log('Category title:', cat?.title);
-    
-    if(books.length > 0) {
-        console.log('First book genre:', books[0].genre);
-        console.log('Type of genre:', typeof books[0].genre);
-    }
-    
+export function CategoryPage({
+    Search,
+    setSearch,
+    CategoriesArray,
+    books,
+    booksfav,
+    toggleFav,
+    bookssaved,
+    toggleSaved,
+    user,
+    onLogout,
+    setShowModal,
+    setType
+}) {
+    let { id } = useParams();
+
+    const cat = CategoriesArray.find(k => k.id === Number(id));
+
     const CatBooks = books.filter(e => e.genre === cat?.title);
-    console.log('Filtered books count:', CatBooks.length);
-    return(
+
+    return (
         <div className="MainCategoryPage">
-            <Header Search={Search} setSearch={setSearch} user={user} onLogout={onLogout}/>
+
+            
+            <Header
+                Search={Search}
+                setSearch={setSearch}
+                user={user}
+                onLogout={onLogout}
+                setShowModal={setShowModal}
+                setType={setType}
+                
+            />
+
             <div className="CategoryPage">
                 <div className="CategoryPage-Books">
-                    {CatBooks.map((c)=>{
-                        return(
-                            <BookCard key={c.id} s={c} booksfav={booksfav} toggleFav={toggleFav} bookssaved={bookssaved} toggleSaved={toggleSaved}/>
-                        )
-                    })}
+                    {CatBooks.map((c) => (
+                        <BookCard
+                            key={c.id}
+                            s={c}
+                            booksfav={booksfav}
+                            toggleFav={toggleFav}
+                            bookssaved={bookssaved}
+                            toggleSaved={toggleSaved}
+                        />
+                    ))}
                 </div>
             </div>
         </div>
-    )
+    );
 }
