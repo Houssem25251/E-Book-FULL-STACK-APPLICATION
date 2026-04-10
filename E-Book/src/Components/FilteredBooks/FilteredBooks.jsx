@@ -2,7 +2,19 @@ import {Header} from '../Header/Header.jsx';
 import './FilteredBooks.css';
 import {BookCard} from '../BookCard/BookCard.jsx';
 
-export function FilteredBooks({Search,setSearch,books,booksfav,toggleFav,bookssaved,toggleSaved,user,onLogout}){
+export function FilteredBooks({
+    Search,
+    setSearch,
+    books,
+    booksfav,
+    toggleFav,
+    bookssaved,
+    toggleSaved,
+    user,
+    onLogout,
+    setShowModal,
+    setType
+}){
     const FilteredBooksSearch = [...new Map(
         books
     .filter(b => b.title.toLowerCase().includes(Search.toLowerCase()) || 
@@ -23,7 +35,8 @@ export function FilteredBooks({Search,setSearch,books,booksfav,toggleFav,bookssa
     else{
         return(
         <div className="MainFilteredBooksPage">
-            <Header Search={Search} setSearch={setSearch} user={user} onLogout={onLogout}/>
+            <Header Search={Search} setSearch={setSearch} user={user} onLogout={onLogout} setShowModal={setShowModal}
+setType={setType}/>
             <div className="FilteredBooksPage">
                 <div className="FilteredPage-Books">
                     {FilteredBooksSearch.map((c)=>{
