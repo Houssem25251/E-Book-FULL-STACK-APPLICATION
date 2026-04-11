@@ -2,7 +2,7 @@
     display:flex;
     align-items: center;
     justify-content: center;
-    width:auto;
+    width:100%;
     left:0;
     right:0;
 }
@@ -16,7 +16,7 @@ body {
 }
 
 .Modal{
-    background-color: rgb(0,0,0,0.6);
+    background-color: rgba(0,0,0,0.6);
     position:fixed;
     top:0;
     left:0;
@@ -27,6 +27,7 @@ body {
     align-items: center;
     z-index: 2000;
     animation: fadeIn 0.3s ease;
+    padding: 20px;
 }
 .Welcome-SignUp{
     font-family:Georgia, 'Times New Roman', Times, serif;
@@ -37,6 +38,7 @@ body {
     color:white;
     font-family: Georgia, 'Times New Roman', Times, serif;
     margin-top:-1px;
+    text-align: center;
 }
 .register-text-click{
     text-decoration: underline;
@@ -57,6 +59,7 @@ body {
     background-color: white;
     flex:1;
     border-radius: 50px 0 0 50px;
+    padding: 20px;
 }
 .SignUp-Button{
     width:150px;
@@ -85,6 +88,7 @@ body {
     transition:transform 0.3s ease;
     font-size:18px;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    box-sizing: border-box;
 }
 .SignUp-Input:focus{
     transform:scale(1.05);
@@ -96,6 +100,9 @@ body {
     align-items: center;
     flex-direction: column;
     row-gap: 30px;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 600px;
 }
 .Box{
     background-color: rgb(56,56,56);
@@ -118,20 +125,91 @@ body {
     to { opacity: 1; }
 }
 
-@media (max-width:414px){
-    .AppDiv{
-        width:100%;
-    }
-}
-
-@media (max-width: 1024px){
-    .AppDiv{
-        width:100%;
-    }
-}
 
 @media (max-width: 768px){
-    .AppDiv{
-        width:100%;
+    .Box{
+        width: 90vw;
+        height: auto;
+        flex-direction: column;
+        border-radius: 30px;
+        gap: 0;
+    }
+    
+    .Left{
+        border-radius: 30px 30px 0 0;
+    }
+    
+    .lib-icon{
+        width:120px;
+        height: 120px;
+    }
+    
+    .Welcome-SignUp{
+        font-size:28px;
+    }
+    
+    .SignUp-Input{
+        width: 85vw;
+        max-width: 280px;
+    }
+    
+    .Right{
+        row-gap: 20px;
+        padding: 20px;
+        max-height: none;
+    }
+    
+    .register-text{
+        font-size:16px;
+    }
+}
+
+
+@media (max-width: 480px){
+    .Modal{
+        padding: 10px;
+    }
+    
+    .Box{
+        width: 95vw;
+        border-radius: 20px;
+    }
+    
+    .Left{
+        border-radius: 20px 20px 0 0;
+        padding: 15px;
+    }
+    
+    .lib-icon{
+        width:100px;
+        height: 100px;
+    }
+    
+    .Welcome-SignUp{
+        font-size:24px;
+        margin: 10px 0;
+    }
+    
+    .SignUp-Input{
+        width: 90vw;
+        max-width: 250px;
+        height: 35px;
+        font-size: 16px;
+    }
+    
+    .SignUp-Button{
+        width:120px;
+        height: 40px;
+        font-size:16px;
+    }
+    
+    .Right{
+        row-gap: 15px;
+        padding: 15px;
+    }
+    
+    .register-text{
+        font-size:14px;
+        padding: 0 10px;
     }
 }
